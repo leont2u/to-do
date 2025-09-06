@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Card, CardContent, Typography, Button } from "@mui/material";
 import { WifiOffOutlined, RefreshOutlined } from "@mui/icons-material";
 

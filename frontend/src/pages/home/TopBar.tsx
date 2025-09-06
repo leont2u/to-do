@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AppBar,
   Toolbar,
@@ -9,16 +7,16 @@ import {
   Avatar,
 } from "@mui/material";
 import { LogoutOutlined, PersonOutlined } from "@mui/icons-material";
-import { useAuth } from "@/components/auth/auth-context";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/useAuth";
 
 export default function DashboardHeader() {
   const { user, logout } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    navigate("/login");
   };
 
   return (

@@ -1,9 +1,5 @@
-"use client";
-
 import type React from "react";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Box,
   Card,
@@ -16,14 +12,15 @@ import {
   Link,
   Container,
 } from "@mui/material";
-import { useAuth } from "./auth-context";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/useAuth";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login, loading, error, clearError } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +32,7 @@ export default function LoginForm() {
 
     try {
       await login(email, password);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err) {
       // Error is handled by the auth context
     }

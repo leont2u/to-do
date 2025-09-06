@@ -1,9 +1,5 @@
-"use client";
-
 import type React from "react";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Box,
   Card,
@@ -16,7 +12,8 @@ import {
   Link,
   Container,
 } from "@mui/material";
-import { useAuth } from "./auth-context";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/useAuth";
 
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
@@ -29,7 +26,7 @@ export default function RegisterForm() {
     Record<string, string>
   >({});
   const { register, loading, error, clearError } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -68,7 +65,7 @@ export default function RegisterForm() {
 
     try {
       await register(formData.email, formData.password, formData.name);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err) {
       // Error is handled by the auth context
     }
@@ -79,7 +76,6 @@ export default function RegisterForm() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData((prev) => ({ ...prev, [field]: e.target.value }));
 
-      // Clear validation errors when user starts typing
       if (validationErrors[field]) {
         setValidationErrors((prev) => ({ ...prev, [field]: "" }));
       }

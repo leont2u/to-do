@@ -1,8 +1,6 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { AuthProvider } from "./auth-context";
-import ProtectedRoute from "./protected-route";
+import { AuthProvider } from "./AuthProvider";
+import ProtectedRoute from "../ProtectedRoute";
 
 interface AuthGuardProps {
   children: ReactNode;

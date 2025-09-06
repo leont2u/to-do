@@ -1,114 +1,103 @@
-"use client";
-
-import { Box, Card, CardContent, Typography, Grid, Paper } from "@mui/material";
+import type React from "react";
 import {
-  CheckCircleOutlined,
-  SecurityOutlined,
-  PersonOutlined,
+  Container,
+  Paper,
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+} from "@mui/material";
+import {
+  AccountCircle,
+  ExitToApp,
+  Dashboard as DashboardIcon,
 } from "@mui/icons-material";
-import { useAuth } from "@/components/auth/auth-context";
+import { useAuth } from "../../context/useAuth";
 
-export default function DashboardContent() {
-  const { user, token } = useAuth();
+const DashboardPage: React.FC = () => {
+  const { user, logout } = useAuth();
 
-  const features = [
-    {
-      icon: (
-        <CheckCircleOutlined sx={{ fontSize: 40, color: "success.main" }} />
-      ),
-      title: "Authentication Complete",
-      description: "You have successfully logged in to your account.",
-    },
-    {
-      icon: <SecurityOutlined sx={{ fontSize: 40, color: "primary.main" }} />,
-      title: "Secure Access",
-      description: "Your session is protected with JWT token authentication.",
-    },
-    {
-      icon: <PersonOutlined sx={{ fontSize: 40, color: "secondary.main" }} />,
-      title: "User Profile",
-      description: "Access your personal information and account settings.",
-    },
-  ];
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h2" sx={{ mb: 1, fontWeight: 600 }}>
-          Welcome back, {user?.name || "User"}!
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          You are now logged in to your protected dashboard.
-        </Typography>
-      </Box>
+    <Container maxWidth="lg">
+      <Box sx={{ py: 4 }}>
+        {/* Header */}
+        <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <DashboardIcon color="primary" sx={{ fontSize: 32 }} />
+              <Typography variant="h4" component="h1">
+                Dashboard
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<ExitToApp />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Box>
+        </Paper>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        {features.map((feature, index) => (
-          <Grid item xs={12} md={4} key={index}>
-            <Card sx={{ height: "100%", textAlign: "center" }}>
-              <CardContent sx={{ p: 3 }}>
-                <Box sx={{ mb: 2 }}>{feature.icon}</Box>
-                <Typography
-                  variant="h6"
-                  component="h3"
-                  sx={{ mb: 1, fontWeight: 600 }}
+        {/* User Info */}
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card>
+              <CardContent>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}
                 >
-                  {feature.title}
+                  <AccountCircle color="primary" sx={{ fontSize: 40 }} />
+                  <Typography variant="h5">User Information</Typography>
+                </Box>
+                <Typography variant="body1" color="text.secondary" gutterBottom>
+                  Welcome to your protected dashboard!
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {feature.description}
+                {user && (
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="body2">
+                      <strong>User ID:</strong> {user.id}
+                    </Typography>
+                    <Typography variant="body2">
+                      <strong>Email:</strong> {user.email}
+                    </Typography>
+                  </Box>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" gutterBottom>
+                  Protected Content
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  This content is only visible to authenticated users. Your
+                  authentication token is being used to access this protected
+                  route.
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
-        ))}
-      </Grid>
-
-      <Paper sx={{ p: 3, bgcolor: "grey.50" }}>
-        <Typography variant="h6" component="h3" sx={{ mb: 2, fontWeight: 600 }}>
-          Account Information
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="text.secondary">
-              Name
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500 }}>
-              {user?.name || "Not provided"}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="text.secondary">
-              Email
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500 }}>
-              {user?.email}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="text.secondary">
-              User ID
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 500, fontFamily: "monospace" }}
-            >
-              {user?.id}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" color="text.secondary">
-              Session Status
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 500, color: "success.main" }}
-            >
-              {token ? "Active" : "Inactive"}
-            </Typography>
-          </Grid>
         </Grid>
-      </Paper>
-    </Box>
+      </Box>
+    </Container>
   );
-}
+};
+
+export default DashboardPage;
