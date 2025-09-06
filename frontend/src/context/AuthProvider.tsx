@@ -77,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/register", {
+      const response = await fetch("http://127.0.0.1:8000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
